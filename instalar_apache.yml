@@ -7,6 +7,7 @@
   - name: Install apache httpd but avoid starting it immediately (state=present is optional)
     apt:
       name: apache2
+      state: latest
   - name: copiar fichero
     copy:
       src: /tmp/index.html
@@ -18,3 +19,4 @@
     service:
       name: apache2
       state: started
+      enabled: yes

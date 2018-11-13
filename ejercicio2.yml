@@ -28,4 +28,4 @@
       register: resultado
     - name: escribimos
       debug:
-        var: resultado
+        var: resultado.status

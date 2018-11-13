@@ -1,0 +1,24 @@
+---
+
+- name: playbook instalancion javita
+  hosts: web
+  tasks:
+    - name: añadir repositorio
+      apt_repository:
+        repo: ppa:webupd8team/java
+    - name: actualizar repositorio
+      apt:
+        update_cache: yes
+    - name: set licence selected
+      shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+    - name: set licence seen
+      shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+    - name: instalar paquete oracle
+      apt:
+        name: oracle-java8-installer
+    - name: copiar fichero
+      copy:
+        src: /vagrant/Playbooks/spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar
+        dest: /home/vagrant/holamundo.jar
+    - name: ejecutar el javita
+      shell: 'nohup java -jar /home/vagrant/holamundo.jar &'

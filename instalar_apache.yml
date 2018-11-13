@@ -7,3 +7,14 @@
   - name: Install apache httpd but avoid starting it immediately (state=present is optional)
     apt:
       name: apache2
+  - name: copiar fichero
+    copy:
+      src: /tmp/index.html
+      dest: /var/www/html
+      owner: root
+      group: root
+      mode: 0777
+  - name: Restart service httpd, in all cases
+    service:
+      name: apache2
+      state: restarted

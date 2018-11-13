@@ -22,3 +22,10 @@
         dest: /home/vagrant/holamundo.jar
     - name: ejecutar el javita
       shell: 'nohup java -jar /home/vagrant/holamundo.jar &'
+    - name: comprobacion
+      uri:
+        url: http://vagrant1:8080
+      register: resultado
+    - name: escribimos
+      debug:
+        var: resultado

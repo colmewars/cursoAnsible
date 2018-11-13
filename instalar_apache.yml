@@ -17,4 +17,4 @@
   - name: Restart service httpd, in all cases
     service:
       name: apache2
-      state: restarted
+      state: started

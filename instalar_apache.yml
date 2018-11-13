@@ -10,6 +10,8 @@
       state: latest
   - name: copiar fichero
     copy:
+      #en lugar de src podemos poner directamente el string, con
+      #content: "hola mundo"
       src: /tmp/index.html
       dest: /var/www/html
       owner: root

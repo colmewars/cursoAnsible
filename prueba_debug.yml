@@ -1,0 +1,12 @@
+---
+  - hosts: localhost
+    vars:
+      direccion: http://www.google.es
+    tasks:
+      - name: coger url
+        uri:
+          url: "{{direccion}}"
+        register: resultado
+      - name: escribimos
+        debug:
+          var: resultado

@@ -1,0 +1,15 @@
+---
+- name: play para copiar el facts customizado
+  hosts: database
+  tasks:
+    - name: crear directorio de facts extras
+      file:
+        path: /etc/ansible/facts.d
+        state: directory
+    - name: copiar fichero
+      copy:
+        src: ./ejercicio-facts/custom.fact
+        dest: /etc/ansible/facts.d/custom.fact
+    - name: escribe las variables
+      debug:
+        var: "{{ custom.database.package_name }}"

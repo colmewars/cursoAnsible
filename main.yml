@@ -1,0 +1,37 @@
+---
+- name: importando setup
+  import_playbook: setup_facts.yml
+- name: segunda parte ejercicio
+  hosts: database
+  vars:
+    mysql_root_password: 'admin'
+    wordpress_password: 'admin'
+  tasks:
+    - name: escribe los facts
+      debug:
+        var: "{{ansible_local.custom.database.package_name}}"
+    - name: Specify MySQL root password before installing
+      debconf: name='mysql-server' question='mysql-server/root_password' value="{{mysql_root_password | quote}}" vtype='password'
+
+    - name: Confirm MySQL root password before installing
+      debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_root_password | quote}}' vtype='password'
+
+    - name: instalar el paquete, en este caso el mysql-server
+      apt:
+        name: "{{ansible_local.custom.database.package_name}}"
+    - name: instalar el otro paquete
+      apt:
+        name: python-pymysql
+
+    - name: instalar otro paquete
+      apt:
+        name: python-mysqldb
+    - name: crear base de datos
+      mysql_db:
+        name: wordpress
+    - name: creacion usuario
+      mysql_user:
+        name: bob
+        password: 12345
+        priv: '*.*:ALL'
+        state: present

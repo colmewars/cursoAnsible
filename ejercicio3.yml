@@ -1,0 +1,17 @@
+---
+- name: playbook para cambiar las ips
+  hosts: esclavos
+  tasks:
+    - name: tarea de cambio de linea
+      lineinfile:
+        path: /etc/hosts
+        line: '192.168.10.3 vagrant2'
+    - name: cambio de linea
+      lineinfile:
+        path: /etc/hosts
+        line: '192.168.10.2 vagrant1'
+    - name: añade linea
+      lineinfile:
+        path: /etc/hosts
+        regexp: 'control'
+        line: "192.168.10.10 control"

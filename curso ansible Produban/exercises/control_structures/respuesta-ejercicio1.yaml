@@ -1,0 +1,89 @@
+- hosts: vagrant1
+  become: True
+  become_method: sudo
+  vars:
+    php_packages:
+      - php7.0
+      - php7.0-mysql
+      - libapache2-mod-php7.0
+      - php7.0-cli
+      - php7.0-cgi
+      - php7.0-gd
+    wordpress_file: wordpress-latest.tar.gz
+    wordpress_db_username: wordpress
+    wordpress_db_name: wordpress
+    wordpress_db_password: 1234
+    wordpress_db_host: vagrant2
+    wordpress_config:
+      - { regex: "^define\\('DB_NAME'", new_value: "define('DB_NAME', '{{ wordpress_db_name }}');" }
+      - { regex: "^define\\('DB_USER'", new_value: "define('DB_USER', '{{ wordpress_db_username }}');" }
+      - { regex: "^define\\('DB_PASSWORD'", new_value: "define('DB_PASSWORD', '{{ wordpress_db_password }}');" }
+      - { regex: "^define\\('DB_HOST'", new_value: "define('DB_HOST', '{{ wordpress_db_host }}');" }
+  tasks:
+    - name: Instalar paquetes de PHP necesarios para WordPress
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ php_packages }}"
+      notify: "restart apache2"
+
+    - name: Verificando (opcionalmente) que el directorio /var/www/html existe
+      stat:
+        path: /var/www/html
+      register: result
+
+    - name: Instalar apache2 en caso que no esté instalado previamente.
+      apt:
+        name: apache2
+        state: present
+      when: (result.stat.isdir is not defined) or (not result.stat.isdir)
+
+    - name: Crear fichero /var/www/html/info.php
+      copy:
+        content: '<?php phpinfo(); ?>'
+        dest: /var/www/html/info.php
+        mode: 0755
+
+    - name: Comprobando que se puede acceder a http://vagrant1/info.php
+      uri:
+        url: http://vagrant1/info.php
+      register: url_result
+    - debug:
+        msg: fichero info.php colocado correctamente
+      when: url_result.status == "200"
+
+    - name: Descargando fichero de WordPress
+      get_url:
+        url: http://wordpress.org/latest.tar.gz
+        dest: /tmp/{{ wordpress_file }}
+
+    - name: Descomprimiendo y desempaquetando el fichero de WordPress
+      unarchive:
+        src: /tmp/{{ wordpress_file }}
+        dest: /var/www/html/
+        remote_src: yes
+    - name: Cambiando el ownership de ficheros bajo /var/www/html
+      file:
+        path: /var/www/html
+        recurse: yes
+        state: directory
+        mode: 0755
+        owner: www-data
+        group: www-data
+    - name: Renombrando fichero /var/www/html/wp-config-sample.php a /var/www/html/wp-config.php
+      command: cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+      args:
+        creates: /var/www/html/wordpress/wp-config.php
+    - name: Cambiando fichero wp-config.php
+      lineinfile:
+        path: /var/www/html/wordpress/wp-config.php
+        regexp: "{{ item.regex }}"
+        line: "{{ item.new_value}}"
+      loop: "{{ wordpress_config }}"
+      notify:
+        - "restart apache2"
+  handlers:
+    - name: "restart apache2"
+      service:
+        name: apache2
+        state: restarted

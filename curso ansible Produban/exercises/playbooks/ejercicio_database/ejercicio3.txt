@@ -1,0 +1,32 @@
+1) Desde la máquina 'control' de vagrant, crear un directorio nuevo: mkdir ejercicio-facts
+
+2) Crear un fichero llamado 'custom.fact' que defina lo siguiente: 
+
+[database]
+username = wordpress
+service = mysql
+package_name = mysql-server
+
+3) Crear un playbook llamado setup_facts.yml que cree el directorio /etc/ansible/facts.d y guarde el fichero custom.fact en ese directorio en la máquina 'vagrant2'
+
+4) Antes de ejecutar el playbook, verificar que su sintaxis es correcta.
+
+5) Ejecutar el playbook setup_facts.yml
+
+6) Para asegurarse que el nuevo fact ha sido instalado correctamente, ejecutar un comando ad-hoc con el modulo setup que sólo muestre la sección 'ansible_local' (aquí debería visualizarse el custom fact añadido en el paso anterior).
+
+7) Crear otro playbook llamado 'main.yml' tal que:
+   7.1) Definir 'mysql_root_password' y 'wordpress_password' como variables a nivel de play.
+   7.2) incluya el setup_facts.yml 
+   7.3) acto seguido instale el paquete referenciado por el fact "custom.database.package_name" seteado en el paso 2. NOTA: ANTES de colocar la tarea que se encarga de instalar este paquete, deben agregarse estas dos tareas:
+
+     - name: Specify MySQL root password before installing
+       debconf: name='mysql-server' question='mysql-server/root_password' value="{{mysql_root_password | quote}}" vtype='password'
+
+     - name: Confirm MySQL root password before installing
+       debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_root_password | quote}}' vtype='password'
+
+       así como otra que instale el paquete 'python-pymysql'.
+
+   7.4) crear una base de datos llamada 'wordpress'   
+   7.5) crear un usuario de MySQL llamado 'wordpress' con '1234' como contraseña y asignarle todos los permisos sobre la base de datos 'wordpress'.

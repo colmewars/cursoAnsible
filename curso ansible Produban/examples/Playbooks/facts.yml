@@ -1,0 +1,9 @@
+- name: playbook de ejemplo 
+  hosts: localhost
+  tasks:
+    - name: modelo de disco duro
+      debug: var=ansible_devices.sda.model
+    - name: direccion IPv4 actual
+      debug: var=ansible_default_ipv4.address
+    - name: hostname corto
+      debug: var=ansible_hostname

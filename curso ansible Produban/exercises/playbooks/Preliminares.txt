@@ -1,0 +1,8 @@
+Pasos preliminares.
+
+- Colocar llave privada de vagrant en nodo de control
+- Crear un inventario que incluya a los hosts "vagrant1" y "vagrant2" dentro de grupos "frontend" y "databases" respectivamente.
+- Instalar interprete de Python en vagrant2 y vagrant1. Nombre de paquete "python" y verificar que está correctamente instalado al escribir `python` en la consola de vagrant2
+
+
+

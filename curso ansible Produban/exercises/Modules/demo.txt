@@ -1,0 +1,36 @@
+1) Entrar en el control node: `vagrant ssh control`
+
+2) Determinar el estado del paquete "apache2":
+
+`dpkg -l | grep apache2`
+
+(Si no devuelve nada indica que no se encuentra instalado)
+
+3) Instalar el paquete "apache2" al ejecutar un comando ad-hoc que utilice el módulo "apt" en vagrant1.
+
+$ ansible vagrant1 -m apt -a 'name=apache2 state=present' 
+
+Verificar el error, y habilitar la escalada de privilegios
+
+4) Determinar nuevamente el estado del paquete "apache2":
+
+`dpkg -l | grep apache2`
+
+5) Determinar el estado del servicio 'apache2' en vagrant1
+
+$ ssh vagrant1
+$ systemctl status apache2
+
+6) Reiniciar el servicio apache2 ejecutando un comando ad-hoc que use el modulo "service" 
+
+$ ansible vagrant1 -m service -a "name=apache2 state=restarted"
+
+7) Verificar nuevamente el estado de dicho servicio
+
+8) Realizar un request HTTP a www.google.com desde el nodo de control y evaluar el código de retorno de la petición HTTP
+
+$ ansible localhost -m uri -a "url=http://www.google.com"
+
+9) Realizar una solicitud HTTP hacia http://www.google.com/noexiste desde workstation y evaluar el código de retorno de la petición HTTP
+
+$ ansible localhost -m uri -a "url=http://www.google.com/noexiste"

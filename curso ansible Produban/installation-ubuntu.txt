@@ -1,0 +1,5 @@
+0) sudo apt update
+1) sudo apt install python-pip python-dev libssl-dev
+2) sudo pip install setuptools --upgrade
+3) sudo pip install markupsafe
+4) sudo pip install ansible==2.5.5

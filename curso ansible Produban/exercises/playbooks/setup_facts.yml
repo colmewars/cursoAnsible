@@ -1,0 +1,14 @@
+- hosts: vagrant2
+  tasks:
+    - name: Crear directorio /etc/ansible/facts.d
+      file:
+        path: /etc/ansible/facts.d
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Copiar el fichero custom.fact
+      copy:
+        src: custom.fact
+        dest: /etc/ansible/facts.d

@@ -1,0 +1,6 @@
+[onpremise-servers]
+server1.example.com
+
+[servers:children]
+onpremise-servers
+cloud-servers

@@ -1,0 +1,3 @@
+* listado de scripts para inventarios dinámicos
+
+https://github.com/ansible/ansible/tree/devel/contrib/inventory

@@ -29,9 +29,14 @@
     - name: crear base de datos
       mysql_db:
         name: wordpress
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
     - name: creacion usuario
       mysql_user:
-        name: bob
-        password: 12345
-        priv: '*.*:ALL'
+        name: "{{ ansible_local.custom.database.username}}"
+        password: "{{ wordpress_password }}"
         state: present
+        login_user: root
+        login_password: "{{mysql_root_password}}"
+        priv: 'wordpress.*:ALL'

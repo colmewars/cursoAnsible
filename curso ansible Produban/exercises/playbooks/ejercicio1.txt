@@ -1,0 +1,20 @@
+Se pide desplegar una aplicación hecha en Java en la máquina vagrant1
+
+Realizar un playbook que haga lo siguiente:
+
+1.- Añadir repositorios de Java al sistema (Pista: usar el módulo apt_repository). El repositorio a agregar se llama "ppa:webupd8team/java"
+2.- Actualizar la lista de repositorios mediante el modulo apt.
+3.- Configurar la licencia de oracle mediante estas tareas:
+
+
+    - name: set licence selected
+      shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+
+    - name: set licence seen
+      shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+
+4.- Instalar el paquete oracle-java8-installer mediante apt
+
+copiar el fichero jar a "/home/vagrant/holamundo.jar" en la máquina
+
+5.- hacer una tarea que ejecute el jar con el modulo shell y este comando:  "nohup java -jar /home/vagrant/holamundo.jar &"

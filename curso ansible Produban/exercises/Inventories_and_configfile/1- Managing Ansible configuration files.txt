@@ -1,0 +1,55 @@
+1) Ejecutar `vagrant up` para levantar 3 VMs.
+2) Verificar si se han creado correctamente al hacer:  `vagrant status`
+3) Revisar su configuración haciendo:  `vagrant ssh-config vagrantX`
+
+4) mkdir /home/vagrant/ejercicio1
+5) Crear un nuevo ansible.cfg en el directorio antes creado con un editor de texto que contenga una sección [defaults]. Agregar una linea que especifique el inventario a usar, siendo "./hosts" el inventario por defecto
+
+[defaults]
+inventory = ./hosts
+
+
+6) En el directorio /home/vagrant/ejercicio1, crear y editar el archivo hosts para que contenga 3 grupos de nodos/hosts:
+ 
+  - "myself" (deberá  contener el host "localhost")
+  - "web" (deberá contener el host "vagrant1")
+  - "database"  (deberá contener el host vagrant2
+  - "todos"  (deberá contener los grupos "myself" e "intranetweb")
+
+El archivo de inventario deberá quedar de la siguiente manera:
+
+[myself]
+localhost ansible_connection=local
+
+[web]
+vagrant1
+
+[database]
+vagrant2
+
+[todos:children]
+myself
+intranet
+
+
+7) Ejecutar el comando "ansible" con la opción "--list-hosts" para probar la inclusión de los hosts en en el inventory:
+
+- ansible myself --list-hosts
+- ansible web --list-hosts
+- ansible database --list-hosts
+- ansible todos --list-hosts
+
+8) Ejecutar: ansible vagrant2 -a 'id'
+
+9) Abrir el archivo ansible.cfg y añadir una sección [privilege_escalation] para configurar Ansible de manera que use sudo para cambiar de usuario 'vagrant' a 'root'
+
+[privilege_escalation]
+become = True
+become_method = sudo
+become_user = root
+become_ask_pass = False
+
+10) Ejecutar: ansible vagrant2 -a 'id'
+
+
+

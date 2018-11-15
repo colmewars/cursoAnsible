@@ -1,0 +1,4 @@
+1) Crear un playbook que añada las siguientes dos entradas al fichero /etc/hosts (en caso de que no existan) de vagrant1 y vagrant2:
+
+192.168.10.2	vagrant1
+192.168.10.3	vagrant2

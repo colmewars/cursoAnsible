@@ -1,0 +1,10 @@
+- hosts: localhost
+  tasks:
+    - name: tarea 1
+      debug: msg="mensaje 1"
+      tags: 
+        - uno
+    - name: tarea 2
+      debug: msg="mensaje 2"
+      tags:
+        - dos

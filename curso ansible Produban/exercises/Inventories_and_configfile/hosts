@@ -1,0 +1,9 @@
+[myself]
+localhost ansible_connection=local
+
+[intranet]
+vagrant2 
+
+[todos:children]
+myself
+intranet

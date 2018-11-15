@@ -1,0 +1,11 @@
+[spain]
+mad.example.com
+bcn.example.com
+
+[portugal]
+lis.example.com
+opo.example.com
+
+[iberia:children]
+spain
+portugal

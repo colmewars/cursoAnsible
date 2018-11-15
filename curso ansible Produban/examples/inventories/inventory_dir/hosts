@@ -1,0 +1,2 @@
+[databases]
+vagrant2 database_name=db2

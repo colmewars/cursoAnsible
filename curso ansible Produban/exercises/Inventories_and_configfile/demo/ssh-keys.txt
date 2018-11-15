@@ -1,0 +1,20 @@
+1) Conectarse al host "vagrant1" con:  vagrant ssh vagrant1
+
+2) Crear usuario "ansible" mediante:  sudo useradd ansible -m -s /bin/bash
+
+3) Definir contraseña para usuario ansible:  sudo passwd ansible
+
+4) Cambiar la opción "PasswordAuthentication" a "yes" en el /etc/ssh/sshd_config
+
+5) Reiniciar el servicio ssh:  systemctl reload ssh
+
+6) Salirse del host "vagrant1":   exit
+
+7) Entrar al host "control":  vagrant ssh control
+
+8) Crear un par de llaves SSH nuevos con ssh-keygen -t rsa -b 4096
+
+9) Copiar la llave pública a vagrant1:  ssh-copy-id ansible@vagrant1
+
+
+

@@ -1,0 +1,4 @@
+[database]
+username = wordpress
+service = mysql
+package_name = mysql-server

@@ -1,0 +1,32 @@
+---
+- hosts: vagrant1
+  become: True
+  become_method: sudo
+  tasks:
+    - name: Añadir repositorio de Java
+      apt_repository: 
+        repo: ppa:webupd8team/java
+        state: present
+
+    - name: Actualizar los repositorios
+      apt:
+        update_cache: yes
+
+    - name: set licence selected
+      shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+
+    - name: set licence seen
+      shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+
+    - name: Instalar paquete de Java
+      apt:
+        name: oracle-java8-installer
+        state: present
+
+    - name: Copiar fichero jar
+      copy:
+        src: ./spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar
+        dest: /home/vagrant/spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar
+
+    - name: Ejecutar aplicación
+      shell: nohup java -jar /home/vagrant/spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar &	

@@ -1,0 +1,36 @@
+1) Crear un playbook que contenga un play con dos tareas y actúe contra vagrant1. La primera tarea estará escrita para que falle de forma deliberada.
+   
+   Defina tres variables:  paquete1 con un valor de "gtop", paquete2 con un valor de "htop" y msj: "Esto siempre se ejecuta":
+
+  ---
+  - hosts: vagrant1
+    vars:
+      paquete1: gtop
+      paquete2: htop
+      msj: yo siempre me ejecuto
+
+2) Defina dos tareas que usen el módulo "apt" y las variables "paquete1" y "paquete2" para instalar ambos paquetes.
+
+3) Ejecute el playbook y observe la salida del play.
+
+4) Actualice la primera tarea para ignorar cualquier error añadiendo la cláusula "ignore_errors: yes"
+
+5) Ejecute nuevamente el playbook.
+
+6) Ejecute un comando ad-hoc sobre vagrant1 para desinstalar el paquete 'htop'.
+
+7) Actualice el playbook quitando la cláusula "ignore_errors: yes" haciendo uso de la directiva block para intentar instalar "paquete1", rescue para intentar instalar "paquete2" y always para mostrar el valor
+   de la variable "msj" por pantalla (módulo 'debug').
+
+8) Ejecute nuevamente el playbook y obseve la salida del play (debería ver como se instala "paquete2" y se muestra por pantalla el valor de la variable "msj").
+
+9) Edite el playbook y agregue dos tareas al inicio (antes de la directiva "block"). La primera tarea usará el módulo "command" para ejecutar el comando "date" y registrará el resultado en una variable llamada
+   "command_result". La segunda tarea, usará el módulo debug para imprimir por pantalla la salida estándar del comando de la tarea anterior (command_result["stdout"]).
+
+10) Ejecute el playbook nuevamente y observe como la tarea que ejecuta el módulo "command" reporta "changed" aún cuando no cambió nada en vagrant1, sólo obtuvo información acerca de la fecha.
+    Esto sucede porque dicho módulo no es lo suficientemente inteligente para diferenciar entre un comando que recoge información y uno que realmente cambia algo en el sistema remoto.
+    Si ejecuta el playbook varias veces, observará que siempre esa tarea se reportará como "changed".
+
+    Dado que esa tarea no debería reportar un status de "changed" siempre, añada la línea "changed_when: false" a la misma para suprimir dicho comportamiento.
+
+11) Ejecute el playbook nuevamente.

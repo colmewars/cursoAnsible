@@ -1,0 +1,9 @@
+1) Verificar la instalación de Ansible en el nodo de control.
+
+2) Verificar que sshd está ejecutándose en el resto de nodos y que se puede acceder desde el nodo de control
+
+3) Desactivar la escalada de privilegios en la configuración de ansible por defecto como buena práctica de seguridad. En caso de que se quiera activar, deberá realizarse a través de sudo con la cuenta de usuario "root" sin contraseña.
+
+4) Ejecutar un comando ad hoc desde el nodo de control para verificar que la escalada de privilegios en los nodos vagrant1 y vagrant2 está deshabilitada por defecto.
+
+5) Ejecutar un comando ad hoc usando el módulo "copy" y activar la escalada de privilegios para modificar el contenido del archivo /etc/motd en el host "vagrant2". El contenido del archivo debería ser: "Este servidor está gestionado por Ansible". Una vez hecho esto, usar un comando ad hoc para verificar el contenido de ese archivo en el host vagrant2

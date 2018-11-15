@@ -1,8 +1,11 @@
 Tomando como base el ejercicio3 de "playbooks", crear un play para que en vagrant1:
 
-  a) Instale los siguientes paquetes: "php7.0 php7.0-mysql libapache2-mod-php7.0 php7.0-cli php7.0-cgi php7.0-gd" (deberán guardarse en una variable y pasársele al módulo apt a través de un loop) y reinicie el servicio "apache2" mediante un handler
+  a) Instale los siguientes paquetes: "php7.0 php7.0-mysql libapache2-mod-php7.0 php7.0-cli php7.0-cgi php7.0-gd"
+    (deberán guardarse en una variable y pasársele al módulo apt a través de un loop) y reinicie el servicio "apache2" mediante un handler
   b) Cree un archivo (/var/www/html/info.php) en vagrant1 que tenga el siguiente contenido: "<?php phpinfo() ?>"
+
   c) Verifique que puede acceder a la ruta: http://vagrant1/info.php
+
   d) Obtenga el fichero de wordpress de la ruta: http://wordpress.org/latest.tar.gz
   e) Desempaquete el contenido de dicho fichero en /var/www/html
   f) Cambie el el ownership de los ficheros en /var/www/html a: www-data:www-data (de forma recursiva)
@@ -16,4 +19,3 @@ Tomando como base el ejercicio3 de "playbooks", crear un play para que en vagran
      define('DB_HOST', 'localhost'); <---- reemplazar 'localhost' por 'vagrant2'
 
      Tras cambiar dicho fichero deberá invocarse al handler que reinicia el servicio 'apache2'
-

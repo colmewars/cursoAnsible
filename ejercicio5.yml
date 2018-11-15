@@ -1,0 +1,60 @@
+---
+- name: play de instalacion de parches en vagrant1
+  hosts: vagrant1
+  vars:
+    paquetes: [ 'php7.0', 'php7.0-mysql', 'libapache2-mod-php7.0', 'php7.0-cli', 'php7.0-cgi', 'php7.0-gd' ]
+    sustituciones: [ { regex: database_name_here, valor_a_incluir: wordpress }, { regex: username_here, valor_a_incluir: wordpress }, { regex: password_here, valor_a_incluir: wordpress }, { regex: localhost, valor_a_incluir: vagrant1 } ]
+  tasks:
+    - name: instalacion de paquetes
+      apt:
+        name: "{{ item }}"
+      loop: "{{ paquetes }}"
+      changed_when: True
+      notify:
+        - apache2_restart
+
+    - name: crear fichero
+      lineinfile:
+        create: yes
+        path: /var/www/html/info.php
+        line: "<?php phpinfo() ?>"
+
+  #  - name: comprobar que ha salido guay
+  #    uri:
+  #      url: http://vagrant1/info.php
+  #      register: salida_url
+
+    - name: Descarga y copia
+      unarchive:
+          src: http://wordpress.org/latest.tar.gz
+          dest: /var/www/html
+          remote_src: yes
+
+    - name: cambiar usuario y permisos
+      file:
+        path: /var/www/html
+        owner: www-data
+        group: www-data
+        mode: 0775
+        recurse: yes
+
+    - name: copia fichero /var/www/html/wp-config-sample.php a /var/www/html/wp-config.php
+      copy:
+        src: /var/www/html/wordpress/wp-config-sample.php
+        dest: /var/www/html/wordpress/wp-config.php
+
+    - name: crear fichero
+      lineinfile:
+        path: /var/www/html/wordpress/wp-config.php
+        regexp: "{{item.regex}}"
+        line: "{{item.valor_a_incluir}}"
+      loop: "{{sustituciones}}"
+
+
+
+################ manejadores ################
+  handlers:
+    - name: apache2_restart
+      service:
+        name: apache2
+        state: restarted
